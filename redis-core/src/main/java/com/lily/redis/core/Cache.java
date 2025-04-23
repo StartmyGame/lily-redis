@@ -10,6 +10,7 @@ import com.lily.redis.support.listener.remove.CacheRemoveListenerContext;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Cache<K, V> implements ICache<K, V>{
 
@@ -30,7 +31,26 @@ public class Cache<K, V> implements ICache<K, V>{
      */
     private ICacheEvict<K, V> evict;
 
+    /**
+     *
+     * 过期策略
+     *
+     */
+    private ICacheExpire<K, V> expire;
+
+    /**
+     *
+     * 删除监听类
+     *
+     */
     private List<ICacheRemoveListener<K, V>> removeListeners;
+
+    /**
+     *
+     * 慢日志监听类
+     *
+     */
+    private List<ICacheSlowListener> slowListeners;
 
     @Override
     public List<ICacheRemoveListener<K, V>> removeListeners() {
@@ -75,11 +95,19 @@ public class Cache<K, V> implements ICache<K, V>{
 
 
     @Override
+    @CacheInterceptor
+    public ICache<K, V> expire(K key, long timeInMills){
+        long expireTime = System.currentTimeMillis() + timeInMills;
+
+//        Cache<K, V> cachePoxy = (Cache<K, V>) CacheProxy
+    }
+
+
+    @Override
     @CacheInterceptor(refresh = true)
     public int size() {
         return map.size();
     }
-
 
     @Override
     @CacheInterceptor(refresh = true)
@@ -97,5 +125,21 @@ public class Cache<K, V> implements ICache<K, V>{
     @CacheInterceptor(refresh = true)
     public boolean containsValue(Object value) {
         return map.containsValue(value);
+    }
+
+    @Override
+    @CacheInterceptor(refresh = true)
+    public Set<K> keySet() {
+        return map.keySet();
+    }
+
+    @Override
+    public List<ICacheSlowListener> slowListeners() {
+        return slowListeners;
+    }
+
+    public Cache<K, V> slowListeners(List<ICacheSlowListener> slowListeners) {
+        this.slowListeners = slowListeners;
+        return this;
     }
 }
