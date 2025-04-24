@@ -1,7 +1,9 @@
 package com.lily.redis.support.interceptor;
 
 import com.lily.redis.api.ICacheInterceptor;
+import com.lily.redis.support.interceptor.aof.CacheInterceptorAof;
 import com.lily.redis.support.interceptor.common.CacheInterceptorCost;
+import com.lily.redis.support.interceptor.evict.CacheInterceptorEvict;
 import com.lily.redis.support.interceptor.refresh.CacheInterceptorRefersh;
 
 import java.util.ArrayList;
@@ -35,10 +37,32 @@ public final class CacheInterceptors {
      *
      * @return
      */
+    @SuppressWarnings("all")
     public static List<ICacheInterceptor> defalutRefreshList(){
         List<ICacheInterceptor> list = new ArrayList<>();
         list.add(new CacheInterceptorRefersh());
         return list;
+    }
+
+    /**
+     *
+     * AOF模式
+     *
+     * @return
+     */
+    @SuppressWarnings("all")
+    public static ICacheInterceptor aof(){
+        return new CacheInterceptorAof();
+    }
+
+    /**
+     *
+     * 驱逐策略拦截器
+     *
+     */
+    @SuppressWarnings("all")
+    public static ICacheInterceptor evict(){
+        return new CacheInterceptorEvict();
     }
 
 }

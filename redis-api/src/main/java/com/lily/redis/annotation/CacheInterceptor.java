@@ -41,4 +41,12 @@ public @interface CacheInterceptor {
      * @return
      */
     boolean aof() default false;
+
+    /**
+     *
+     * 是否执行驱逐更新
+     *
+     * @return
+     */
+    boolean evict() default false;
 }
