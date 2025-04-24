@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @param <K>
  * @param <V>
  */
-public class CachePersistAof<K, V> extends CachePersistAdaptor<K, V {
+public class CachePersistAof<K, V> extends CachePersistAdaptor<K, V>{
 
     private static final Log log = LogFactory.getLog(CachePersistAof.class);
 
